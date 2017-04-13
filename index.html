@@ -8,89 +8,75 @@
 	<!--<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans"/>-->
 </head>
 <body>
+	<div data-ng-controller="mainCtrl">
+		<div class="container-fluid">
+			<div class="row">
 
-<div data-ng-controller="mainCtrl">
-	<div class="container-fluid">
-		<div class="row">
+				<!-- sidebar-block -->
+				<div class="col-sm-3 col-md-2 sidebar">
+					<h1 class="h1">Main</h1>
+					<ul class="nav nav-sidebar">
+						<li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+					</ul>
+				</div> <!-- /sidebar -->
 
-			<!-- sidebar-block -->
-			<div class="col-sm-3 col-md-2 sidebar">
-				<h1 class="h1">Main</h1>
-				<ul class="nav nav-sidebar">
-					<li class="active"><a href="#">Overview <span
-							class="sr-only">(current)</span></a></li>
-				</ul>
-			</div> <!-- /sidebar -->
+				<!-- main block  -->
+				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+					<h1 class="page-header">Dashboard</h1>
+					<div class="row placeholders">
 
-			<!-- main block  -->
-			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<h1 class="page-header">Dashboard</h1>
-				<div class="row placeholders">
+						<div class="col-md-8 col-md-offset-2">
+							<div class="panel panel-default">
+								<div class="panel-heading">Items</div>
+								<div class="panel-body">
+									<form class="form-inline" data-ng-submit="addItem()">
+										<div class="form-group">
+											<input type="text" required class="form-control" data-ng-model="itemNew.name" placeholder="Type name here...">
+											<button type="submit" class="btn btn-default">Add new</button>
+										</div>
 
-					<div class="col-md-8 col-md-offset-2">
-						<div class="panel panel-default">
-							<div class="panel-heading">Items</div>
-							<div class="panel-body">
-								<form class="form-inline" data-ng-submit="addItem()">
-									<div class="form-group">
-										<input type="text" required class="form-control"
-											   data-ng-model="itemNew.name"
-											   placeholder="Type name here...">
-										<button type="submit" class="btn btn-default">Add new
-										</button>
-									</div>
-
-								</form>
-								<ul class="list-group">
-									<li class="list-group-item"
-										data-ng-repeat="item in items track by $index"
-										data-ng-click="show_comment($index)">
-										<button class="btn btn-default pull-right"
-												data-ng-click="deleteItem($index)">delete
-										</button>
-										<span class="label label-primary">{{item.coments.length}}</span>
-										{{item.name}}
-									</li>
-								</ul>
-								<div class="panel-heading">Comments</div>
-								<ul class="list-group">
-									<li class="list-group-item"
-										data-ng-repeat="comment in comments track by $index">
-										<span class="label label-primary">{{comment.content}}</span>
-									</li>
-								</ul>
-								<ul class="list-group" ng-show="comments.length">
-									<li class="list-group-item">
-										<form data-ng-submit="commentAdd()">
-											<input type="text" required
-												   data-ng-model="commentNew.content"
-												   ng-keyup="$event.keyCode == 13 && commentAdd()"
-											placeholder="Add comment (press Enter)">
-										</form>
-									</li>
-								</ul>
+									</form>
+									<ul class="list-group">
+										<li class="list-group-item" data-ng-repeat="item in items track by $index" data-ng-click="show_comment($index)">
+											<button class="btn btn-default pull-right" data-ng-click="deleteItem($index)">delete</button>
+											<span class="label label-primary">{{item.coments.length}}</span>
+											{{item.name}}
+										</li>
+									</ul>
+									<ul class="list-group">
+										<li class="list-group-item" data-ng-repeat="comment in comments track by $index">
+											<span class="label label-primary">{{comment.content}}</span>
+										</li>
+									</ul>
+									<ul class="list-group" ng-show="comments.length">
+										<li class="list-group-item">
+											<form data-ng-submit="commentAdd()">
+											  <input type="text" required data-ng-model="commentNew.content" ng-keyup="$event.keyCode == 13 && commentAdd()">
+											</form>
+										</li>
+									</ul>
+								</div>
 							</div>
 						</div>
+
 					</div>
 
-				</div>
+					<h2 class="sub-header">Section title</h2>
+					<div class="table-responsive">
+					</div>
 
-				<h2 class="sub-header">Section title</h2>
-				<div class="table-responsive">
-				</div>
-
-			</div> <!-- /main -->
+				</div> <!-- /main -->
+			</div>
 		</div>
 	</div>
-</div>
 </body>
 
 <script>
 	var app = angular.module('App', []);
 
-	app.controller("mainCtrl", function ($scope) {
+	app.controller("mainCtrl", function($scope){
 
-		$scope.deleteItem = function ($index) {
+		$scope.deleteItem = function($index){
 			$scope.items.splice($index, 1);
 		};
 		$scope.show_comment = function ($index) {
@@ -99,39 +85,39 @@
 			//$scope.comments.push.apply($scope.comments, $scope.items[$index].coments);
 			$scope.comments = $scope.items[$index].coments;
 		}
-		$scope.addItem = function () {
+		$scope.addItem = function(){
 			$scope.items.push($scope.itemNew);
-			$scope.itemNew = {name: '', coments: []};
+			$scope.itemNew = {name:'', coments:[]};
 		};
 		$scope.commentAdd = function () {
 			$scope.comments.push($scope.commentNew);
-			$scope.commentNew = {content: null};
+			$scope.commentNew = {content:null};
 		}
-		$scope.commentNew = {content: null};
-		$scope.comments = [];
-		$scope.itemNew = {name: '', coments: []};
+		$scope.commentNew = {content:null};
+		$scope.comments=[];
+		$scope.itemNew ={name:'', coments:[]};
 
 		$scope.items = [{
-				name: 'Nokia Lumia 630',
-					coments: [{
-						content: '1'
-					}]
-			}, {
-				name: 'Samsung Galaxy S 4',
-					coments: [{
-						content: '1'
-					}, {
-						content: '2'
-					}]
-			}, {
-				name: 'Mi 5',
-				coments: [{
-					content: '1'
-				}, {
-					content: '2'
-				}, {
-					content: '3'
-				}]
+			name: 'Nokia Lumia 630',
+			coments: [{
+				content: '1'
+			}]
+		},{
+			name: 'Samsung Galaxy S 4',
+			coments: [{
+				content: '1'
+			},{
+				content: '2'
+			}]
+		},{
+			name: 'Mi 5',
+			coments: [{
+				content: '1'
+			},{
+				content: '2'
+			},{
+				content: '3'
+			}]
 		}];
 	});
 </script>
